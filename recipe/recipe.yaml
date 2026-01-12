@@ -18,8 +18,12 @@ build:
     - if: unix
       then: |
         set -exo pipefail
+        if [[ ${build_platform} != ${target_platform} ]]; then
+          extra_cmake_args="-DTEST_STD_CHRONO_FROM_STREAM_R=ON"
+        fi
+        
         export CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
-        cmake -S . -B build ${CMAKE_ARGS} -DBUILD_TESTING=ON -DBUILD_SHARED_LIBS=ON
+        cmake -S . -B build ${CMAKE_ARGS} -DBUILD_TESTING=ON -DBUILD_SHARED_LIBS=ON ${extra_cmake_args}
         cmake --build build --config Release --parallel ${CPU_COUNT}
         ctest -V -C Release --test-dir build
         cmake --install build
