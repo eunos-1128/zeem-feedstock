@@ -1,16 +1,18 @@
 context:
+  name: "zeem"
   version: "2.1.0"
+  author: "mhekkel"
 
 package:
   name: zeem
   version: ${{ version }}
 
 source:
-  url: https://github.com/mhekkel/zeem/archive/refs/tags/v${{ version }}.tar.gz
+  url: https://github.com/${{ author }}/${{ name }}/archive/refs/tags/v${{ version }}.tar.gz
   sha256: 8b7998cc732f3220f57bfd9d01964e5aa005bc1288f0c9eee25d38a71c1eb0eb
 
 build:
-  number: 1
+  number: 2
   script:
     # Use locally installed Catch2
     - sed -i.bak 's#CPMAddPackage("gh:catchorg/Catch2@3.4.0")#find_package(Catch2 REQUIRED)#' test/CMakeLists.txt
@@ -67,7 +69,7 @@ requirements:
     - howardhinnant_date
   run_exports:
     # Patch version update may be breakable
-    - ${{ pin_subpackage("zeem", upper_bound="x.x.x") }}
+    - ${{ pin_subpackage(name, upper_bound="x.x.x") }}
   ignore_run_exports:
     by_name:
       - catch2
